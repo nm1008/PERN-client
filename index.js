@@ -139,7 +139,7 @@ $("#add").click(() => {
   console.log(userId + 1);
 
   const user = {
-    user_id: userId + 1,
+    user_id: userId > 1 ? userId + 1 : 1,
     first_name:
       stringCleanser(firstName).charAt(0).toUpperCase() + firstName.slice(1),
     last_name:
