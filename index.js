@@ -30,21 +30,20 @@ $.ajax({
   type: "GET",
   url: `${baseURL}getAll`,
   success: (res) => {
-    if (userId == undefined) {
-      userId = 1;
-    } else {
-      userId = Object.keys(res[res.length - 1]);
-      let numberOfPages = Math.ceil(res.length / 5);
-      if (numberOfPages > 0) {
-        for (let i = 1; i <= numberOfPages; i++) {
-          $("#pagination").append(
-            `
+    console.log(res.length);
+
+    userId = Object.keys(res[res.length - 1].user_id);
+    console.log(`This userId is from get all employee ${userId}`);
+    let numberOfPages = Math.ceil(res.length / 5);
+    if (numberOfPages > 0) {
+      for (let i = 1; i <= numberOfPages; i++) {
+        $("#pagination").append(
+          `
               <li class="page-item">
                 <a type="button" class="page-link" onclick="handlePagination(${i}, 5)">${i}</a>
               </li>      
             `
-          );
-        }
+        );
       }
     }
   },
@@ -56,17 +55,19 @@ $.ajax({
   url: baseURL,
   success: (res) => {
     $("#table-body").empty();
-
+    console.log(res);
     if (res.length === 0) {
-      userId = 1;
-      // console.log(userId);
+      userId = 1; // initializing userId = 1
+
       $("#viewAll").hide();
       $("#spanUser").html(`
         <h1 class="text-center my-5">No users</h1>
       `);
     }
-    console.log(`this userId is from render page ${userId}`);
     res.forEach((user) => {
+    
+      userId = user.user_id;
+      console.log(`this userId is from render page ${userId + 1}`);
       $("#table-body").append(`
         <tr>
           <td class="fw-bold">${user.user_id}</td>
@@ -144,7 +145,6 @@ $("#add").click(() => {
   }
 
   const user = {
-    user_id: userId >= 1 ? userId + 1 : 1,
     first_name:
       stringCleanser(firstName).charAt(0).toUpperCase() + firstName.slice(1),
     last_name:
@@ -154,6 +154,8 @@ $("#add").click(() => {
     phone_number: stringCleanser(phoneNumber),
     json_data: JSON.stringify(jsonData),
   };
+
+ 
 
   $.ajax({
     url: baseURL,
