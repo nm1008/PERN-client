@@ -1,9 +1,11 @@
-const baseURL = "https://postgre-api-lyart.vercel.app/api/v1/users/";
+const baseURL = "http://localhost:3000/api/v1/users/";
 
 let userId;
 let editUserId;
 let viewAllBtn = false;
 let setLoading = true;
+
+console.log(`this userId is from global js ${userId}`);
 
 const input = document.querySelector("#phone");
 var updateInput = document.querySelector("#upd-phone-number");
@@ -28,19 +30,21 @@ $.ajax({
   type: "GET",
   url: `${baseURL}getAll`,
   success: (res) => {
-    userId = Object.keys(res[res.length - 1]);
-
-    // console.log(userId);
-    let numberOfPages = Math.ceil(res.length / 5);
-    if (numberOfPages > 0) {
-      for (let i = 1; i <= numberOfPages; i++) {
-        $("#pagination").append(
-          `
-            <li class="page-item">
-              <a type="button" class="page-link" onclick="handlePagination(${i}, 5)">${i}</a>
-            </li>      
-          `
-        );
+    if (userId == undefined) {
+      userId = 1;
+    } else {
+      userId = Object.keys(res[res.length - 1]);
+      let numberOfPages = Math.ceil(res.length / 5);
+      if (numberOfPages > 0) {
+        for (let i = 1; i <= numberOfPages; i++) {
+          $("#pagination").append(
+            `
+              <li class="page-item">
+                <a type="button" class="page-link" onclick="handlePagination(${i}, 5)">${i}</a>
+              </li>      
+            `
+          );
+        }
       }
     }
   },
@@ -52,6 +56,7 @@ $.ajax({
   url: baseURL,
   success: (res) => {
     $("#table-body").empty();
+
     if (res.length === 0) {
       userId = 1;
       // console.log(userId);
@@ -60,7 +65,7 @@ $.ajax({
         <h1 class="text-center my-5">No users</h1>
       `);
     }
-
+    console.log(`this userId is from render page ${userId}`);
     res.forEach((user) => {
       $("#table-body").append(`
         <tr>
@@ -83,6 +88,7 @@ $.ajax({
   },
 });
 
+//Pagination
 const handlePagination = (page, pageSize) => {
   $("#table-body").empty();
   $.ajax({
@@ -91,6 +97,8 @@ const handlePagination = (page, pageSize) => {
     success: (res) => {
       res.forEach((user) => {
         userId = user.user_id;
+
+        console.log(`this userId is from handlePagination ${userId}`);
 
         $("#table-body").append(`
           <tr>
@@ -111,8 +119,6 @@ const handlePagination = (page, pageSize) => {
   });
 };
 
-//PAGINATION
-
 //ADD USER
 $("#add").click(() => {
   const firstName = $("#first-name").val();
@@ -123,7 +129,8 @@ $("#add").click(() => {
   const jsonData = iti.getSelectedCountryData();
 
   //   console.log(firstName)
-  console.log(jsonData);
+  // console.log(jsonData);
+  console.log(`this userId is from add user ${userId}`);
 
   if (
     firstName === "" ||
@@ -136,10 +143,8 @@ $("#add").click(() => {
     return $("#addEmployeeModal").modal("hide");
   }
 
-  console.log(userId + 1);
-
   const user = {
-    user_id: userId > 1 ? userId + 1 : 1,
+    user_id: userId >= 1 ? userId + 1 : 1,
     first_name:
       stringCleanser(firstName).charAt(0).toUpperCase() + firstName.slice(1),
     last_name:
