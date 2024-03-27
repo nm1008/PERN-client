@@ -5,7 +5,7 @@ let editUserId;
 let viewAllBtn = false;
 let setLoading = true;
 
-console.log(`this userId is from global js ${userId}`);
+// console.log(`this userId is from global js ${userId}`);
 
 const input = document.querySelector("#phone");
 var updateInput = document.querySelector("#upd-phone-number");
@@ -30,10 +30,10 @@ $.ajax({
   type: "GET",
   url: `${baseURL}getAll`,
   success: (res) => {
-    console.log(res.length);
+    // console.log(res.length);
 
     userId = Object.keys(res[res.length - 1].user_id);
-    console.log(`This userId is from get all employee ${userId}`);
+    // console.log(`This userId is from get all employee ${userId}`);
     let numberOfPages = Math.ceil(res.length / 5);
     if (numberOfPages > 0) {
       for (let i = 1; i <= numberOfPages; i++) {
@@ -55,7 +55,7 @@ $.ajax({
   url: baseURL,
   success: (res) => {
     $("#table-body").empty();
-    console.log(res);
+    // console.log(res);
     if (res.length === 0) {
       userId = 1; // initializing userId = 1
 
@@ -65,9 +65,8 @@ $.ajax({
       `);
     }
     res.forEach((user) => {
-    
       userId = user.user_id;
-      console.log(`this userId is from render page ${userId + 1}`);
+      // console.log(`this userId is from render page ${userId + 1}`);
       $("#table-body").append(`
         <tr>
           <td class="fw-bold">${user.user_id}</td>
@@ -99,7 +98,7 @@ const handlePagination = (page, pageSize) => {
       res.forEach((user) => {
         userId = user.user_id;
 
-        console.log(`this userId is from handlePagination ${userId}`);
+        // console.log(`this userId is from handlePagination ${userId}`);
 
         $("#table-body").append(`
           <tr>
@@ -131,7 +130,7 @@ $("#add").click(() => {
 
   //   console.log(firstName)
   // console.log(jsonData);
-  console.log(`this userId is from add user ${userId}`);
+  // console.log(`this userId is from add user ${userId}`);
 
   if (
     firstName === "" ||
@@ -154,8 +153,6 @@ $("#add").click(() => {
     phone_number: stringCleanser(phoneNumber),
     json_data: JSON.stringify(jsonData),
   };
-
- 
 
   $.ajax({
     url: baseURL,
