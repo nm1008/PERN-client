@@ -1,4 +1,4 @@
-const baseURL = "http://localhost:3000/api/v1/users/";
+const baseURL = "http://postgre-api-lyart.vercel.app/api/v1/users/";
 
 let userId;
 let editUserId;
