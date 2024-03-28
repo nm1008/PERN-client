@@ -148,7 +148,7 @@ $("#add").click(() => {
       stringCleanser(firstName).charAt(0).toUpperCase() + firstName.slice(1),
     last_name:
       stringCleanser(lastName).charAt(0).toUpperCase() + lastName.slice(1),
-    email: stringCleanser(email),
+    email: email,
     address: stringCleanser(address),
     phone_number: stringCleanser(phoneNumber),
     json_data: JSON.stringify(jsonData),
@@ -223,7 +223,7 @@ const updateUser = (userId) => {
       last_name:
         stringCleanser(updateLastName).charAt(0).toUpperCase() +
         updateLastName.slice(1),
-      email: stringCleanser(updateEmail),
+      email: updateEmail,
       address: stringCleanser(updateAddress),
       phone_number: stringCleanser(updatePhoneNumber),
     };
